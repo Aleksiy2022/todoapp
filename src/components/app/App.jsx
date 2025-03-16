@@ -1,6 +1,8 @@
 import NewTaskForm from '../new_task_form/NewTaskForm.jsx'
 import TaskList from '../task_list/TaskList.jsx'
+import Footer from "../footer/Footer.jsx";
 import "./app.css"
+// import "./index.css"
 
 export default function App() {
 
@@ -15,6 +17,7 @@ export default function App() {
       <NewTaskForm />
       <section className="main">
         <TaskList tasks={todoData}/>
+        <Footer />
       </section>
     </section>
   )
