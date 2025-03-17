@@ -1,18 +1,19 @@
 import "./task_list.css"
 import Task from "../task/Task.jsx"
 
-export default function TaskList({ tasks , onChangeStatus}) {
+export default function TaskList({ tasks , onChangeStatus, onDeleted }) {
   const inputEl = <input type="text" className="edit" value="Editing task" />
 
   const elements = tasks.map((task) => {
     const { id, statusClass, ...taskItems } = task
     const isEdit = statusClass === "editing"
     return (
-      <li key={id} className={statusClass}>
+      <li key={ id } className={ statusClass }>
         <Task 
-          taskData={taskItems} 
-          isEdit={isEdit} 
-          onChangeStatus={ () => onChangeStatus(id) }/>
+          taskData={ taskItems } 
+          isEdit={ isEdit } 
+          onChangeStatus={ () => onChangeStatus(id) }
+          onDeleted={ () => onDeleted(id) }/>
         {isEdit ? inputEl : null}
       </li>
     )
@@ -20,7 +21,7 @@ export default function TaskList({ tasks , onChangeStatus}) {
 
   return (
     <ul className="todo-list">
-      {elements}
+      { elements }
     </ul>
   )
 }

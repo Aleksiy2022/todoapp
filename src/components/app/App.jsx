@@ -13,7 +13,7 @@ const initialData = [
 
 export default function App() {
   const [todoData, setTodoData] = useState(initialData)
-  
+
   function hadleChangeStatus(id) {
     const updatedTodoData = todoData.map(elem => {
       if (elem.id === id) {
@@ -24,13 +24,20 @@ export default function App() {
     setTodoData(updatedTodoData)
   }
 
+  function handleDeletedTask(id) {
+    const idx = todoData.findIndex(el => el.id === id)
+    const updatedTodoData = todoData.toSpliced(idx, 1)
+    setTodoData(updatedTodoData)
+  }
+
   return (
     <section className="todoapp">
       <NewTaskForm />
       <section className="main">
         <TaskList 
           tasks={ todoData }
-          onChangeStatus={ hadleChangeStatus }/>
+          onChangeStatus={ hadleChangeStatus }
+          onDeleted={ handleDeletedTask }/>
         <Footer />
       </section>
     </section>
