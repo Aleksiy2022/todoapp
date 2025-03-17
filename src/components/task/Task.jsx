@@ -1,11 +1,15 @@
 import "./task.css"
 
-export default function Task({taskData}) {
-
+export default function Task({taskData, onChangeStatus}) {
   const {description, createdAt} = taskData
+  
   return (
+    
     <div className="view">
-      <input className="toggle" type="checkbox"/>
+      <input 
+        className="toggle" 
+        type="checkbox"
+        onClick={onChangeStatus}/>
       <label>
         <span className="description">{description}</span>
         <span className="created">{createdAt}</span>
