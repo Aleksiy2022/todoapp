@@ -4,20 +4,20 @@ import {useState} from 'react';
 
 export default function TaskList({tasks, onChangeStatus, onDisplayEditTaskForm, onUpdateTask, onDeleted}) {
 
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState({});
 
-  function onChange(evt) {
-    setInputValue(evt.target.value);
+  function onChange(evt, id) {
+    setInputValue({ ...inputValue, [id]: evt.target.value });
   }
 
   function onSubmit(evt, id) {
     evt.preventDefault()
-    onUpdateTask(inputValue, id)
-    setInputValue("");
+    onUpdateTask(inputValue[id], id)
+    setInputValue({ ...inputValue, [id]: "" })
   }
 
   function onEdit(evt, description, id) {
-    setInputValue(description);
+    setInputValue({ ...inputValue, [id]: description })
     onDisplayEditTaskForm(evt, id)
   }
 
@@ -35,8 +35,8 @@ export default function TaskList({tasks, onChangeStatus, onDisplayEditTaskForm, 
           <input
             type="text"
             className="edit hidden"
-            onChange={onChange}
-            value={inputValue}/>
+            onChange={(evt) => onChange(evt, id)}
+            value={inputValue[id]}/>
         </form>
       </li>
     )

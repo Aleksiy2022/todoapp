@@ -1,7 +1,7 @@
 import "./task.css"
 
 export default function Task({taskData, onChangeStatus, onEdit, onDeleted}) {
-  const {description, createdAt} = taskData
+  const {description, createdAgo} = taskData
 
   return (
     <div className="view">
@@ -11,7 +11,7 @@ export default function Task({taskData, onChangeStatus, onEdit, onDeleted}) {
         onClick={onChangeStatus}/>
       <label>
         <span className="description">{description}</span>
-        <span className="created">{createdAt}</span>
+        <span className="created">{createdAgo}</span>
       </label>
       <button onClick={(evt) => onEdit(evt, description)} className="icon icon-edit"></button>
       <button onClick={onDeleted} className="icon icon-destroy"></button>

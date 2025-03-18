@@ -1,19 +1,31 @@
 import NewTaskForm from '../new_task_form/NewTaskForm.jsx'
 import TaskList from '../task_list/TaskList.jsx'
 import Footer from "../footer/Footer.jsx";
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import "./app.css"
+import { formatDistanceToNow } from 'date-fns'
 // import "./index.css"
 
-let maxId = 100
-
-const initialData = [
-  {statusClass: "", description: "Completed task", createdAt: "created 17 seconds ago", id: 1},
-  {statusClass: "", description: "Active task", createdAt: "created 5 minutes ago", id: 3},
-]
+let maxId = 1
 
 export default function App() {
-  const [todoData, setTodoData] = useState(initialData)
+  const [todoData, setTodoData] = useState([])
+
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      const updatedTodoData = todoData.map(task => {
+        return {
+          ...task,
+          createdAgo: `created ${formatDistanceToNow(new
+          Date(task.createdAt), { includeSeconds: true })} ago`
+        }
+      })
+      setTodoData(updatedTodoData)
+    }, 1000)
+    return () => {
+      clearInterval(timerId)
+    }
+  }, [todoData])
 
   function handleChangeStatusTask(id) {
     const updatedTodoData = todoData.map(elem => {
@@ -49,17 +61,22 @@ export default function App() {
     setTodoData(updatedTodoData)
   }
 
-  function createTask(value, createdAt) {
+  function createTask(value) {
+    const currentDate = new Date()
     return {
       statusClass: "",
       description: value,
-      createdAt: createdAt,
+      createdAt: currentDate.toISOString(),
+      createdAgo: `created ${formatDistanceToNow(
+        currentDate.toISOString(),
+        {includeSeconds: true}
+        )} ago`,
       id: maxId++
     }
   }
 
-  function handleAddNewTask(value, createdAt) {
-    const newTask = createTask(value, createdAt)
+  function handleAddNewTask(value) {
+    const newTask = createTask(value)
     setTodoData(todoData.concat(newTask))
   }
 
