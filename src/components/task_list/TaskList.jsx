@@ -2,7 +2,7 @@ import "./task_list.css"
 import Task from "../task/Task.jsx"
 import {useState} from 'react';
 
-export default function TaskList({tasks, onChangeStatus, onEdit, onUpdateTask, onDeleted}) {
+export default function TaskList({tasks, onChangeStatus, onDisplayEditTaskForm, onUpdateTask, onDeleted}) {
 
   const [inputValue, setInputValue] = useState("");
 
@@ -16,6 +16,11 @@ export default function TaskList({tasks, onChangeStatus, onEdit, onUpdateTask, o
     setInputValue("");
   }
 
+  function onEdit(evt, description, id) {
+    setInputValue(description);
+    onDisplayEditTaskForm(evt, id)
+  }
+
   const elements = tasks.map((task) => {
     const {id, statusClass, ...taskItems} = task
     return (
@@ -23,7 +28,7 @@ export default function TaskList({tasks, onChangeStatus, onEdit, onUpdateTask, o
         <Task
           taskData={taskItems}
           onChangeStatus={() => onChangeStatus(id)}
-          onEdit={() => onEdit(id)}
+          onEdit={(evt,description) => onEdit(evt, description, id)}
           onDeleted={() => onDeleted(id)}/>
         <form
           onSubmit={(evt) => onSubmit(evt, id)}>

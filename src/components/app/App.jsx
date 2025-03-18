@@ -5,9 +5,10 @@ import {useState} from 'react';
 import "./app.css"
 // import "./index.css"
 
+let maxId = 100
+
 const initialData = [
   {statusClass: "", description: "Completed task", createdAt: "created 17 seconds ago", id: 1},
-  // {statusClass: "editing", description: "Editing task", createdAt: "created 5 minutes ago", id: 2},
   {statusClass: "", description: "Active task", createdAt: "created 5 minutes ago", id: 3},
 ]
 
@@ -24,7 +25,7 @@ export default function App() {
     setTodoData(updatedTodoData)
   }
 
-  function displayEditingTaskForm(id) {
+  function handleDisplayEditingTaskForm(evt, id) {
     const updatedTodoData = todoData.map(elem => {
       if (elem.id === id) {
         if (elem.statusClass.includes("completed")) {
@@ -48,6 +49,20 @@ export default function App() {
     setTodoData(updatedTodoData)
   }
 
+  function createTask(value, createdAt) {
+    return {
+      statusClass: "",
+      description: value,
+      createdAt: createdAt,
+      id: maxId++
+    }
+  }
+
+  function handleAddNewTask(value, createdAt) {
+    const newTask = createTask(value, createdAt)
+    setTodoData(todoData.concat(newTask))
+  }
+
   function handleDeletedTask(id) {
     const idx = todoData.findIndex(el => el.id === id)
     const updatedTodoData = todoData.toSpliced(idx, 1)
@@ -56,12 +71,12 @@ export default function App() {
 
   return (
     <section className="todoapp">
-      <NewTaskForm/>
+      <NewTaskForm onAddNewTask={handleAddNewTask}/>
       <section className="main">
         <TaskList
           tasks={todoData}
           onChangeStatus={handleChangeStatusTask}
-          onEdit={displayEditingTaskForm}
+          onDisplayEditTaskForm={handleDisplayEditingTaskForm}
           onUpdateTask={handleUpdateTask}
           onDeleted={handleDeletedTask}/>
         <Footer/>
