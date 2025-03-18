@@ -14,7 +14,7 @@ const initialData = [
 export default function App() {
   const [todoData, setTodoData] = useState(initialData)
 
-  function hadleChangeStatus(id) {
+  function handleChangeStatus(id) {
     const updatedTodoData = todoData.map(elem => {
       if (elem.id === id) {
         elem.statusClass === null ? elem.statusClass = "completed" : elem.statusClass = null
@@ -36,7 +36,7 @@ export default function App() {
       <section className="main">
         <TaskList 
           tasks={ todoData }
-          onChangeStatus={ hadleChangeStatus }
+          onChangeStatus={ handleChangeStatus }
           onDeleted={ handleDeletedTask }/>
         <Footer />
       </section>
