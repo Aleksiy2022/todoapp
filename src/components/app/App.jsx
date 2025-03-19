@@ -1,9 +1,10 @@
 import NewTaskForm from '../new_task_form/NewTaskForm.jsx'
 import TaskList from '../task_list/TaskList.jsx'
-import Footer from "../footer/Footer.jsx";
-import {useState, useEffect} from 'react';
+import Footer from "../footer/Footer.jsx"
+import {useState, useEffect} from 'react'
 import "./app.css"
 import {formatDistanceToNow} from 'date-fns'
+import PropTypes from 'prop-types'
 
 let newId = 1
 

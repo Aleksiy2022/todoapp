@@ -1,7 +1,12 @@
 import "./task.css"
 import {useState} from "react";
 
-export default function Task({task, onChangeStatus, onEditTask, onDeleted}) {
+export default function Task({
+                               task = {},
+                               onChangeStatus = () => {},
+                               onEditTask = () => {},
+                               onDeleted = () => {}
+}) {
 
   const [inputValue, setInputValue] = useState({});
   const [editing, setEditing] = useState({});

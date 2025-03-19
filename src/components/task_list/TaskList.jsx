@@ -1,7 +1,12 @@
 import "./task_list.css"
 import Task from "../task/Task.jsx"
 
-export default function TaskList({tasks, onChangeStatus, onEditTask, onDeleted}) {
+export default function TaskList({
+                                   tasks = [],
+                                   onChangeStatus = () => {},
+                                   onEditTask = () => {},
+                                   onDeleted = () => {}
+}) {
   return (
     <ul className="todo-list">
       {tasks.map((task) => {

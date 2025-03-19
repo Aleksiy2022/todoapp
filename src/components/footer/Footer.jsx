@@ -2,7 +2,7 @@ import "./footer.css"
 import TaskFilter from "../task_filter/TaskFilter.jsx";
 
 export default function Footer({
-                                 onFilter,
+                                 onFilter = () => {},
                                  filter = "all",
                                  countUndoneTasks = 0,
                                  onDeleteCompletedTasks = () => {

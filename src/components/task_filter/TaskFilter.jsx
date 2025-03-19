@@ -1,6 +1,9 @@
 import "./task_filter.css"
 
-export default function TaskFilter({onFilter, filter}) {
+export default function TaskFilter({
+                                     onFilter = () => {},
+                                     filter = "all"
+}) {
 
   const buttonsData = [
     {name: "all", label: "All"},

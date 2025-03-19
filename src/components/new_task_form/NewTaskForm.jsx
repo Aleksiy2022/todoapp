@@ -1,7 +1,7 @@
 import "./new_task_form.css"
 import {useState} from "react";
 
-export default function NewTaskForm({onAddNewTask}) {
+export default function NewTaskForm({onAddNewTask = () => {}}) {
 
   const [newTask, setNewTask] = useState("")
 
