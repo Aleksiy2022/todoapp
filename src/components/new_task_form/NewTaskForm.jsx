@@ -1,21 +1,18 @@
-import "./new_task_form.css"
-import {useState} from "react";
+import './new_task_form.css'
+import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-export default function NewTaskForm({onAddNewTask = () => {}}) {
-
-  const [newTask, setNewTask] = useState("")
+export default function NewTaskForm({ onAddNewTask = () => {} }) {
+  const [newTask, setNewTask] = useState('')
 
   function handleSubmit(evt) {
     evt.preventDefault()
     onAddNewTask(newTask)
-    setNewTask("")
+    setNewTask('')
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="header">
+    <form onSubmit={handleSubmit} className="header">
       <h1>Todos</h1>
       <input
         onChange={(evt) => {
@@ -23,7 +20,8 @@ export default function NewTaskForm({onAddNewTask = () => {}}) {
         }}
         className="new-todo"
         placeholder="What needs to be done?"
-        value={newTask}/>
+        value={newTask}
+      />
     </form>
   )
 }

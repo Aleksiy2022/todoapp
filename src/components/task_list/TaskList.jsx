@@ -1,12 +1,13 @@
-import "./task_list.css"
-import Task from "../task/Task.jsx"
+import './task_list.css'
 import PropTypes from 'prop-types'
 
+import Task from '../task/Task.jsx'
+
 export default function TaskList({
-                                   tasks = [],
-                                   onChangeStatus = () => {},
-                                   onEditTask = () => {},
-                                   onDeleted = () => {}
+  tasks = [],
+  onChangeStatus = () => {},
+  onEditTask = () => {},
+  onDeleted = () => {},
 }) {
   return (
     <ul className="todo-list">
@@ -17,7 +18,8 @@ export default function TaskList({
             task={task}
             onChangeStatus={(id) => onChangeStatus(id)}
             onEditTask={(id, value) => onEditTask(id, value)}
-            onDeleted={(id) => onDeleted(id)}/>
+            onDeleted={(id) => onDeleted(id)}
+          />
         )
       })}
     </ul>
