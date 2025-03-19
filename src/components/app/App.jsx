@@ -3,76 +3,62 @@ import TaskList from '../task_list/TaskList.jsx'
 import Footer from "../footer/Footer.jsx";
 import {useState, useEffect} from 'react';
 import "./app.css"
-import { formatDistanceToNow } from 'date-fns'
+import {formatDistanceToNow} from 'date-fns'
 
-let maxId = 1
+let newId = 1
 
 export default function App() {
   const [todoData, setTodoData] = useState([])
-  const [filter, setFilter] = useState("all")
+  const [taskFilter, setFilter] = useState("all")
 
   useEffect(() => {
     const timerId = setInterval(() => {
-      const updatedTodoData = todoData.map(task => {
+      const copyTodoData = JSON.parse(JSON.stringify(todoData))
+      const updatedTodoData = copyTodoData.map(task => {
         return {
           ...task,
           createdAgo: `created ${formatDistanceToNow(new
-          Date(task.createdAt), { includeSeconds: true })} ago`
+          Date(task.createdAt), {includeSeconds: true})} ago`
         }
       })
       setTodoData(updatedTodoData)
-    }, 1000)
+    }, 5000)
     return () => {
       clearInterval(timerId)
     }
   }, [todoData])
 
-  function createTask(value) {
+  function createTask(text) {
     const currentDate = new Date()
     return {
       statusClass: "",
-      description: value,
+      description: text,
       createdAt: currentDate.toISOString(),
       createdAgo: `created ${formatDistanceToNow(
         currentDate.toISOString(),
         {includeSeconds: true}
       )} ago`,
-      id: maxId++,
-      done: false
+      id: newId++,
+      status: false
     }
   }
 
   function handleChangeStatusTask(id) {
     const updatedTodoData = todoData.map(elem => {
       if (elem.id === id) {
-        elem.statusClass === "" ? elem.statusClass = "completed" : elem.statusClass = ""
-        elem.done = !elem.done
-        return elem
-      } else return elem
+        return {...elem, status: !elem.status};
+      }
+      return elem
     })
     setTodoData(updatedTodoData)
   }
 
-  function handleDisplayEditingTaskForm(evt, id) {
+  function handleEditTask(id, value) {
     const updatedTodoData = todoData.map(elem => {
       if (elem.id === id) {
-        if (elem.statusClass.includes("completed")) {
-          return elem
-        }
-        elem.statusClass += " editing"
-        return elem
-      } else return elem
-    })
-    setTodoData(updatedTodoData)
-  }
-
-  function handleUpdateTask(value, id) {
-    const updatedTodoData = todoData.map(elem => {
-      if (elem.id === id) {
-        elem.description = value
-        elem.statusClass = ""
-        return elem
-      } else return elem
+        return {...elem, description: value}
+      }
+      return elem
     })
     setTodoData(updatedTodoData)
   }
@@ -89,7 +75,7 @@ export default function App() {
   }
 
   function handleDeleteCompletedTasks() {
-    const updatedTodoData = todoData.filter(task => !task.done)
+    const updatedTodoData = todoData.filter(task => !task.status)
     setTodoData(updatedTodoData)
   }
 
@@ -98,18 +84,18 @@ export default function App() {
   }
 
   function filteredTasks(filter) {
-    switch(filter) {
+    switch (filter) {
       case "all":
         return todoData
       case "active":
-        return todoData.filter(task => !task.done)
+        return todoData.filter(task => task.status === false)
       case "completed":
-        return todoData.filter(task => task.done)
+        return todoData.filter(task => task.status)
     }
   }
 
   function undoneTasks() {
-    return todoData.filter(task => !task.done).length
+    return todoData.filter(task => !task.status).length
   }
 
   return (
@@ -117,14 +103,13 @@ export default function App() {
       <NewTaskForm onAddNewTask={handleAddNewTask}/>
       <section className="main">
         <TaskList
-          tasks={filteredTasks(filter)}
+          tasks={filteredTasks(taskFilter)}
           onChangeStatus={handleChangeStatusTask}
-          onDisplayEditTaskForm={handleDisplayEditingTaskForm}
-          onUpdateTask={handleUpdateTask}
+          onEditTask={handleEditTask}
           onDeleted={handleDeletedTask}/>
         <Footer
-          onFilter={(filter) => handleFilter(filter)}
-          filter={filter}
+          onFilter={handleFilter}
+          filter={taskFilter}
           countUndoneTasks={undoneTasks()}
           onDeleteCompletedTasks={handleDeleteCompletedTasks}/>
       </section>

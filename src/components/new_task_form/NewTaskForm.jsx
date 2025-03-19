@@ -17,7 +17,9 @@ export default function NewTaskForm({onAddNewTask}) {
       className="header">
       <h1>Todos</h1>
       <input
-        onChange={(evt) => {setNewTask(evt.target.value)}}
+        onChange={(evt) => {
+          setNewTask(evt.target.value)
+        }}
         className="new-todo"
         placeholder="What needs to be done?"
         value={newTask}/>
