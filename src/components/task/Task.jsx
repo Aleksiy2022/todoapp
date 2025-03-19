@@ -1,5 +1,6 @@
 import "./task.css"
 import {useState} from "react";
+import PropTypes from 'prop-types'
 
 export default function Task({
                                task = {},
@@ -57,8 +58,15 @@ export default function Task({
           type="text"
           className="edit hidden"
           onChange={(evt) => onChange(evt, id)}
-          value={inputValue[id]}/>
+          value={inputValue[id] || ""}/>
       </form>
     </li>
   )
+}
+
+Task.propTypes = {
+  task: PropTypes.object.isRequired,
+  onChangeStatus: PropTypes.func,
+  onEditTask: PropTypes.func,
+  onDeleted: PropTypes.func,
 }

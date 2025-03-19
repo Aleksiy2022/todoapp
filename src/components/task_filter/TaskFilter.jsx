@@ -1,4 +1,5 @@
 import "./task_filter.css"
+import PropTypes from 'prop-types'
 
 export default function TaskFilter({
                                      onFilter = () => {},
@@ -31,4 +32,9 @@ export default function TaskFilter({
       {buttons}
     </ul>
   )
+}
+
+TaskFilter.propTypes = {
+  onFilter: PropTypes.func,
+  filter: PropTypes.string,
 }

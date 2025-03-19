@@ -4,13 +4,14 @@ import Footer from "../footer/Footer.jsx"
 import {useState, useEffect} from 'react'
 import "./app.css"
 import {formatDistanceToNow} from 'date-fns'
-import PropTypes from 'prop-types'
 
 let newId = 1
 
 export default function App() {
   const [todoData, setTodoData] = useState([])
   const [taskFilter, setFilter] = useState("all")
+
+  const updateInterval = 5000
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -23,7 +24,7 @@ export default function App() {
         }
       })
       setTodoData(updatedTodoData)
-    }, 5000)
+    }, updateInterval)
     return () => {
       clearInterval(timerId)
     }

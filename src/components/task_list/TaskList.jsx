@@ -1,5 +1,6 @@
 import "./task_list.css"
 import Task from "../task/Task.jsx"
+import PropTypes from 'prop-types'
 
 export default function TaskList({
                                    tasks = [],
@@ -21,4 +22,11 @@ export default function TaskList({
       })}
     </ul>
   )
+}
+
+TaskList.propTypes = {
+  tasks: PropTypes.arrayOf(PropTypes.object),
+  onChangeStatus: PropTypes.func,
+  onEditTask: PropTypes.func,
+  onDeleted: PropTypes.func,
 }

@@ -1,5 +1,6 @@
 import "./new_task_form.css"
 import {useState} from "react";
+import PropTypes from 'prop-types'
 
 export default function NewTaskForm({onAddNewTask = () => {}}) {
 
@@ -25,4 +26,8 @@ export default function NewTaskForm({onAddNewTask = () => {}}) {
         value={newTask}/>
     </form>
   )
+}
+
+NewTaskForm.propTypes = {
+  onAddNewTask: PropTypes.func,
 }

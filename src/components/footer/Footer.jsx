@@ -1,5 +1,6 @@
 import "./footer.css"
 import TaskFilter from "../task_filter/TaskFilter.jsx";
+import PropTypes from 'prop-types'
 
 export default function Footer({
                                  onFilter = () => {},
@@ -21,4 +22,11 @@ export default function Footer({
       </button>
     </footer>
   )
+}
+
+Footer.propTypes = {
+  onFilter: PropTypes.func,
+  filter: PropTypes.string,
+  countUndoneTasks: PropTypes.number,
+  onDeleteCompletedTasks: PropTypes.func,
 }
