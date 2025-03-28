@@ -38,7 +38,7 @@ export default [
       indent: 'off',
       'react-hooks/exhaustive-deps': 'off',
       'prettier/prettier': 'error',
-      'linebreak-style': [0, 'unix'],
+      'linebreak-style': ['off'],
       quotes: ['error', 'single'],
       semi: ['error', 'never'],
       'react/react-in-jsx-scope': 'off',

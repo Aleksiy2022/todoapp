@@ -1,66 +1,23 @@
+import { v4 as uuidv4 } from 'uuid'
 import { useState } from 'react'
 
 import NewTaskForm from '../new_task_form/NewTaskForm.jsx'
 import TaskList from '../task_list/TaskList.jsx'
 import Footer from '../footer/Footer.jsx'
 
-let newId = 1
+import {
+  handleChangeStatusTask,
+  handleEditTask,
+  handleAddNewTask,
+  handleDeletedTask,
+  handleDeleteCompletedTasks,
+  handleFilter,
+} from './eventHandlers.js'
+import { getFilteredTasks, getUndoneTasksCount } from './utils.js'
 
 export default function App() {
   const [todoData, setTodoData] = useState([])
   const [taskFilter, setFilter] = useState('all')
-
-  function createTask(text) {
-    const currentDate = new Date()
-    return {
-      statusClass: '',
-      description: text,
-      createdAt: currentDate.toISOString(),
-      id: newId++,
-      status: false,
-      duration: 1000000,
-    }
-  }
-
-  function handleChangeStatusTask(id) {
-    const updatedTodoData = todoData.map((elem) => {
-      if (elem.id === id) {
-        return { ...elem, status: !elem.status }
-      }
-      return elem
-    })
-    setTodoData(updatedTodoData)
-  }
-
-  function handleEditTask(id, value) {
-    const updatedTodoData = todoData.map((elem) => {
-      if (elem.id === id) {
-        return { ...elem, description: value }
-      }
-      return elem
-    })
-    setTodoData(updatedTodoData)
-  }
-
-  function handleAddNewTask(value) {
-    const newTask = createTask(value)
-    setTodoData(todoData.concat(newTask))
-  }
-
-  function handleDeletedTask(id) {
-    const idx = todoData.findIndex((el) => el.id === id)
-    const updatedTodoData = todoData.toSpliced(idx, 1)
-    setTodoData(updatedTodoData)
-  }
-
-  function handleDeleteCompletedTasks() {
-    const updatedTodoData = todoData.filter((task) => !task.status)
-    setTodoData(updatedTodoData)
-  }
-
-  function handleFilter(filter) {
-    setFilter(filter)
-  }
 
   function handleChangeDuration(id, value) {
     const updatedTodoData = todoData.map((elem) => {
@@ -72,37 +29,22 @@ export default function App() {
     setTodoData(updatedTodoData)
   }
 
-  function filteredTasks(filter) {
-    switch (filter) {
-      case 'all':
-        return todoData
-      case 'active':
-        return todoData.filter((task) => task.status === false)
-      case 'completed':
-        return todoData.filter((task) => task.status)
-    }
-  }
-
-  function undoneTasks() {
-    return todoData.filter((task) => !task.status).length
-  }
-
   return (
     <section className="todoapp">
-      <NewTaskForm onAddNewTask={handleAddNewTask} />
+      <NewTaskForm onAddNewTask={(task) => handleAddNewTask(uuidv4(), task, todoData, setTodoData)} />
       <section className="main">
         <TaskList
-          tasks={filteredTasks(taskFilter)}
-          onChangeStatus={handleChangeStatusTask}
-          onEditTask={handleEditTask}
-          onDeleted={handleDeletedTask}
+          tasks={getFilteredTasks(taskFilter, todoData)}
+          onChangeStatus={(id) => handleChangeStatusTask(id, todoData, setTodoData)}
+          onEditTask={(id, value) => handleEditTask(id, value, todoData, setTodoData)}
+          onDeleted={(id) => handleDeletedTask(id, todoData, setTodoData)}
           onChangeDuration={handleChangeDuration}
         />
         <Footer
-          onFilter={handleFilter}
+          onFilter={(filter) => handleFilter(filter, setFilter)}
           filter={taskFilter}
-          countUndoneTasks={undoneTasks()}
-          onDeleteCompletedTasks={handleDeleteCompletedTasks}
+          undoneTasksCount={getUndoneTasksCount(todoData)}
+          onDeleteCompletedTasks={() => handleDeleteCompletedTasks(todoData, setTodoData)}
         />
       </section>
     </section>

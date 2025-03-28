@@ -40,7 +40,7 @@ export default function Task({
         <label>
           <span className="title">{description}</span>
           <span className="description">
-            <DurationTimer taskId={id} duration={duration} onChangeDuration={onChangeDuration} />
+            <DurationTimer taskId={id} taskStatus={status} duration={duration} onChangeDuration={onChangeDuration} />
           </span>
           <CreatedTimer createdAt={createdAt} />
         </label>

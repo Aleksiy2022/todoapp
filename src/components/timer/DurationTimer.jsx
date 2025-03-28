@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react'
 
+import { getTimeLeft } from './utils.js'
+
 export default function DurationTimer({ taskId, duration = 0, onChangeDuration = () => {} }) {
   const [currentTime, setCurrentTime] = useState(Date.now())
   const [endTime, setEndTime] = useState(currentTime + duration)
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft())
-  const [timerIsActive, setTimerIsActive] = useState(true)
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft(currentTime, endTime))
+  const [timerIsActive, setTimerIsActive] = useState(false)
   useEffect(() => {
     const timerId = setInterval(() => {
+      console.log(timerIsActive)
+      if (duration === 0) {
+        setTimerIsActive(false)
+        setTimeLeft('00:00')
+      }
       if (timerIsActive) {
+        console.log('timerId is active')
         setCurrentTime(Date.now())
-        setTimeLeft(getTimeLeft())
+        setTimeLeft(getTimeLeft(currentTime, endTime))
       } else {
         clearInterval(timerId)
       }
@@ -17,27 +25,22 @@ export default function DurationTimer({ taskId, duration = 0, onChangeDuration =
     return () => {
       clearInterval(timerId)
     }
-  }, [currentTime, timerIsActive])
-
-  function getTimeLeft() {
-    if (currentTime >= endTime) {
-      return '00:00'
-    }
-    const minute = new Date(endTime - currentTime).getMinutes().toString()
-    const seconds = new Date(endTime - currentTime).getSeconds().toString()
-    return `${minute.length === 2 ? minute : '0' + minute}:${seconds.length === 2 ? seconds : '0' + seconds}`
-  }
+  }, [currentTime, timerIsActive, duration])
 
   function handlePlay() {
-    setCurrentTime(Date.now())
-    setEndTime(Date.now() + duration)
-    setTimerIsActive(true)
+    if (!timerIsActive && duration !== 0) {
+      setCurrentTime(Date.now())
+      setEndTime(Date.now() + duration)
+      setTimerIsActive(true)
+    }
   }
 
   function handlePaused() {
-    const newDuration = endTime - currentTime
-    setTimerIsActive(false)
-    onChangeDuration(taskId, newDuration)
+    if (duration !== 0) {
+      const newDuration = endTime - currentTime
+      setTimerIsActive(false)
+      onChangeDuration(taskId, newDuration)
+    }
   }
   return (
     <>
