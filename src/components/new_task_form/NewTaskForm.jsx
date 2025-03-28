@@ -1,4 +1,3 @@
-import './new_task_form.css'
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
@@ -12,17 +11,22 @@ export default function NewTaskForm({ onAddNewTask = () => {} }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="header">
+    <header className="header">
       <h1>Todos</h1>
-      <input
-        onChange={(evt) => {
-          setNewTask(evt.target.value)
-        }}
-        className="new-todo"
-        placeholder="What needs to be done?"
-        value={newTask}
-      />
-    </form>
+      <form onSubmit={handleSubmit} className="new-todo-form">
+        <input
+          onChange={(evt) => {
+            setNewTask(evt.target.value)
+          }}
+          className="new-todo"
+          placeholder="What needs to be done?"
+          value={newTask}
+        />
+        <input className="new-todo-form__timer" placeholder="Min" autoFocus />
+        <input className="new-todo-form__timer" placeholder="Sec" autoFocus />
+        <button type="submit" style={{ display: 'none' }}></button>
+      </form>
+    </header>
   )
 }
 

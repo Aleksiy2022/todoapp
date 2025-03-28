@@ -1,11 +1,8 @@
-import { useState, useEffect } from 'react'
-import { formatDistanceToNow } from 'date-fns'
+import { useState } from 'react'
 
 import NewTaskForm from '../new_task_form/NewTaskForm.jsx'
 import TaskList from '../task_list/TaskList.jsx'
 import Footer from '../footer/Footer.jsx'
-
-import './app.css'
 
 let newId = 1
 
@@ -13,37 +10,15 @@ export default function App() {
   const [todoData, setTodoData] = useState([])
   const [taskFilter, setFilter] = useState('all')
 
-  const updateInterval = 5000
-
-  useEffect(() => {
-    const timerId = setInterval(() => {
-      const copyTodoData = JSON.parse(JSON.stringify(todoData))
-      const updatedTodoData = copyTodoData.map((task) => {
-        return {
-          ...task,
-          createdAgo: `created ${formatDistanceToNow(new Date(task.createdAt), {
-            includeSeconds: true,
-          })} ago`,
-        }
-      })
-      setTodoData(updatedTodoData)
-    }, updateInterval)
-    return () => {
-      clearInterval(timerId)
-    }
-  }, [todoData])
-
   function createTask(text) {
     const currentDate = new Date()
     return {
       statusClass: '',
       description: text,
       createdAt: currentDate.toISOString(),
-      createdAgo: `created ${formatDistanceToNow(currentDate.toISOString(), {
-        includeSeconds: true,
-      })} ago`,
       id: newId++,
       status: false,
+      duration: 1000000,
     }
   }
 
@@ -87,6 +62,16 @@ export default function App() {
     setFilter(filter)
   }
 
+  function handleChangeDuration(id, value) {
+    const updatedTodoData = todoData.map((elem) => {
+      if (elem.id === id) {
+        return { ...elem, duration: value }
+      }
+      return elem
+    })
+    setTodoData(updatedTodoData)
+  }
+
   function filteredTasks(filter) {
     switch (filter) {
       case 'all':
@@ -111,6 +96,7 @@ export default function App() {
           onChangeStatus={handleChangeStatusTask}
           onEditTask={handleEditTask}
           onDeleted={handleDeletedTask}
+          onChangeDuration={handleChangeDuration}
         />
         <Footer
           onFilter={handleFilter}

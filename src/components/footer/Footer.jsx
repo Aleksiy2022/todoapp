@@ -1,4 +1,3 @@
-import './footer.css'
 import PropTypes from 'prop-types'
 
 import TaskFilter from '../task_filter/TaskFilter.jsx'

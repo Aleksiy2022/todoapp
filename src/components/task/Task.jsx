@@ -1,12 +1,20 @@
-import './task.css'
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
-export default function Task({ task = {}, onChangeStatus = () => {}, onEditTask = () => {}, onDeleted = () => {} }) {
+import DurationTimer from '../timer/DurationTimer.jsx'
+import CreatedTimer from '../timer/CreatedTimer.jsx'
+
+export default function Task({
+  task = {},
+  onChangeStatus = () => {},
+  onEditTask = () => {},
+  onDeleted = () => {},
+  onChangeDuration = () => {},
+}) {
   const [inputValue, setInputValue] = useState({})
   const [editing, setEditing] = useState({})
 
-  const { id, status, description, createdAgo } = task
+  const { id, status, description, createdAt, duration } = task
 
   function setStatesToDisplayEditForm() {
     setEditing({ ...editing, [id]: true })
@@ -30,8 +38,11 @@ export default function Task({ task = {}, onChangeStatus = () => {}, onEditTask 
       <div className="view">
         <input className="toggle" type="checkbox" onChange={() => onChangeStatus(id)} checked={status} />
         <label>
-          <span className="description">{description}</span>
-          <span className="created">{createdAgo}</span>
+          <span className="title">{description}</span>
+          <span className="description">
+            <DurationTimer taskId={id} duration={duration} onChangeDuration={onChangeDuration} />
+          </span>
+          <CreatedTimer createdAt={createdAt} />
         </label>
         <button onClick={setStatesToDisplayEditForm} className="icon icon-edit"></button>
         <button onClick={() => onDeleted(id)} className="icon icon-destroy"></button>

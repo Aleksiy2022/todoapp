@@ -1,4 +1,3 @@
-import './task_filter.css'
 import PropTypes from 'prop-types'
 
 export default function TaskFilter({ onFilter = () => {}, filter = 'all' }) {
