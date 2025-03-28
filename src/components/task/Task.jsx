@@ -9,7 +9,8 @@ export default function Task({
   onChangeStatus = () => {},
   onEditTask = () => {},
   onDeleted = () => {},
-  onChangeDuration = () => {},
+  onStartTimer = () => {},
+  onPauseTimer = () => {},
 }) {
   const [inputValue, setInputValue] = useState({})
   const [editing, setEditing] = useState({})
@@ -40,7 +41,11 @@ export default function Task({
         <label>
           <span className="title">{description}</span>
           <span className="description">
-            <DurationTimer taskId={id} taskStatus={status} duration={duration} onChangeDuration={onChangeDuration} />
+            <DurationTimer
+              duration={duration}
+              onStartTimer={() => onStartTimer(id)}
+              onPauseTimer={() => onPauseTimer(id)}
+            />
           </span>
           <CreatedTimer createdAt={createdAt} />
         </label>

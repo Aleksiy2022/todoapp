@@ -1,17 +1,19 @@
 import { v4 as uuidv4 } from 'uuid'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import NewTaskForm from '../new_task_form/NewTaskForm.jsx'
 import TaskList from '../task_list/TaskList.jsx'
 import Footer from '../footer/Footer.jsx'
 
 import {
-  handleChangeStatusTask,
-  handleEditTask,
   handleAddNewTask,
-  handleDeletedTask,
+  handleChangeStatusTask,
   handleDeleteCompletedTasks,
+  handleDeletedTask,
+  handleEditTask,
   handleFilter,
+  handlePauseTimer,
+  handleStartTimer,
 } from './eventHandlers.js'
 import { getFilteredTasks, getUndoneTasksCount } from './utils.js'
 
@@ -19,15 +21,27 @@ export default function App() {
   const [todoData, setTodoData] = useState([])
   const [taskFilter, setFilter] = useState('all')
 
-  function handleChangeDuration(id, value) {
-    const updatedTodoData = todoData.map((elem) => {
-      if (elem.id === id) {
-        return { ...elem, duration: value }
+  useEffect(() => {
+    const timers = todoData.map((task) => {
+      if (task.timerStatus && task.duration > 0) {
+        return setInterval(() => {
+          setTodoData((currentTodoData) =>
+            currentTodoData.map((elem) => {
+              if (elem.id === task.id && elem.duration > 0) {
+                return { ...elem, duration: elem.endTimer - Date.now() }
+              }
+              return elem
+            })
+          )
+        }, 100)
       }
-      return elem
     })
-    setTodoData(updatedTodoData)
-  }
+    return () => {
+      timers.forEach((timerId) => {
+        if (timerId) clearInterval(timerId)
+      })
+    }
+  }, [todoData])
 
   return (
     <section className="todoapp">
@@ -38,7 +52,8 @@ export default function App() {
           onChangeStatus={(id) => handleChangeStatusTask(id, todoData, setTodoData)}
           onEditTask={(id, value) => handleEditTask(id, value, todoData, setTodoData)}
           onDeleted={(id) => handleDeletedTask(id, todoData, setTodoData)}
-          onChangeDuration={handleChangeDuration}
+          onStartTimer={(id) => handleStartTimer(id, todoData, setTodoData)}
+          onPauseTimer={(id) => handlePauseTimer(id, todoData, setTodoData)}
         />
         <Footer
           onFilter={(filter) => handleFilter(filter, setFilter)}

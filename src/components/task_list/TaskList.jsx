@@ -7,7 +7,8 @@ export default function TaskList({
   onChangeStatus = () => {},
   onEditTask = () => {},
   onDeleted = () => {},
-  onChangeDuration = () => {},
+  onStartTimer = () => {},
+  onPauseTimer = () => {},
 }) {
   return (
     <ul className="todo-list">
@@ -16,10 +17,11 @@ export default function TaskList({
           <Task
             key={task.id}
             task={task}
-            onChangeStatus={(id) => onChangeStatus(id)}
-            onEditTask={(id, value) => onEditTask(id, value)}
-            onDeleted={(id) => onDeleted(id)}
-            onChangeDuration={onChangeDuration}
+            onChangeStatus={onChangeStatus}
+            onEditTask={onEditTask}
+            onDeleted={onDeleted}
+            onStartTimer={onStartTimer}
+            onPauseTimer={onPauseTimer}
           />
         )
       })}
@@ -32,4 +34,6 @@ TaskList.propTypes = {
   onChangeStatus: PropTypes.func,
   onEditTask: PropTypes.func,
   onDeleted: PropTypes.func,
+  onStartTimer: PropTypes.func,
+  onPauseTimer: PropTypes.func,
 }

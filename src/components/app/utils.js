@@ -1,5 +1,6 @@
 function createTask(id, task) {
   const currentDate = new Date()
+  const currentTime = Date.now()
   return {
     statusClass: '',
     description: task.description,
@@ -7,6 +8,9 @@ function createTask(id, task) {
     id: id,
     status: false,
     duration: task.duration,
+    timerStatus: true,
+    startTimer: currentTime,
+    endTimer: currentTime + task.duration,
   }
 }
 
