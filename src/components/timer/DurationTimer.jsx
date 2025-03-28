@@ -3,8 +3,21 @@ import { useEffect, useState } from 'react'
 export default function DurationTimer({ taskId, duration = 0, onChangeDuration = () => {} }) {
   const [currentTime, setCurrentTime] = useState(Date.now())
   const [endTime, setEndTime] = useState(currentTime + duration)
-  const [timeLeft, setTimeLeft] = useState(getTimeLeft)
-  const [isActive, setIsActive] = useState(true)
+  const [timeLeft, setTimeLeft] = useState(getTimeLeft())
+  const [timerIsActive, setTimerIsActive] = useState(true)
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      if (timerIsActive) {
+        setCurrentTime(Date.now())
+        setTimeLeft(getTimeLeft())
+      } else {
+        clearInterval(timerId)
+      }
+    }, 200)
+    return () => {
+      clearInterval(timerId)
+    }
+  }, [currentTime, timerIsActive])
 
   function getTimeLeft() {
     if (currentTime >= endTime) {
@@ -16,31 +29,16 @@ export default function DurationTimer({ taskId, duration = 0, onChangeDuration =
   }
 
   function handlePlay() {
+    setCurrentTime(Date.now())
     setEndTime(Date.now() + duration)
-    setIsActive(true)
+    setTimerIsActive(true)
   }
 
   function handlePaused() {
     const newDuration = endTime - currentTime
-    console.log(newDuration)
-    setIsActive(false)
+    setTimerIsActive(false)
     onChangeDuration(taskId, newDuration)
   }
-
-  useEffect(() => {
-    const timerId = setInterval(() => {
-      if (isActive) {
-        setTimeLeft(getTimeLeft)
-        setCurrentTime(Date.now())
-      } else {
-        clearInterval(timerId)
-      }
-    }, 100)
-    return () => {
-      clearInterval(timerId)
-    }
-  }, [currentTime, isActive])
-
   return (
     <>
       <button className="icon icon-play" onClick={handlePlay}></button>

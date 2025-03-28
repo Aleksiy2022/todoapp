@@ -2,7 +2,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { useEffect, useState } from 'react'
 
 export default function CreatedTimer({ createdAt }) {
-  const updateInterval = 5000
+  const updateInterval = 10000
   const [createdAgo, setCreatedAgo] = useState(calculateCreateAgo)
 
   function calculateCreateAgo() {
