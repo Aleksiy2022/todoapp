@@ -7,6 +7,7 @@ function createTask(id, task) {
     createdAt: currentDate.toISOString(),
     id: id,
     status: false,
+    editing: false,
     duration: task.duration,
     timerStatus: true,
     startTimer: currentTime,

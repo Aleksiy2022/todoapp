@@ -1,5 +1,5 @@
 function getTimeLeft(duration) {
-  if (duration === 0) {
+  if (duration <= 0) {
     return '00:00'
   }
   const hours = new Date(duration).getUTCHours().toString()

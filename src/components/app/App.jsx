@@ -14,6 +14,8 @@ import {
   handleFilter,
   handlePauseTimer,
   handleStartTimer,
+  handleKeyDown,
+  handleChangeEditing,
 } from './eventHandlers.js'
 import { getFilteredTasks, getUndoneTasksCount } from './utils.js'
 
@@ -43,6 +45,27 @@ export default function App() {
     }
   }, [todoData])
 
+  useEffect(() => {
+    function handleGlobalEvents(event) {
+      if (event.type === 'keydown' && event.key === 'Escape') {
+        setTodoData((currentTodoData) => currentTodoData.map((task) => ({ ...task, editing: false })))
+      }
+      if (event.type === 'click' && !event.target.classList.value.includes('edit')) {
+        setTodoData((currentTodoData) => currentTodoData.map((task) => ({ ...task, editing: false })))
+      }
+    }
+
+    // Подписка на события
+    window.addEventListener('keydown', handleGlobalEvents)
+    window.addEventListener('click', handleGlobalEvents)
+
+    // Удаление событий при размонтировании компонента
+    return () => {
+      window.removeEventListener('keydown', handleGlobalEvents)
+      window.removeEventListener('click', handleGlobalEvents)
+    }
+  }, [todoData])
+
   return (
     <section className="todoapp">
       <NewTaskForm onAddNewTask={(task) => handleAddNewTask(uuidv4(), task, todoData, setTodoData)} />
@@ -54,6 +77,8 @@ export default function App() {
           onDeleted={(id) => handleDeletedTask(id, todoData, setTodoData)}
           onStartTimer={(id) => handleStartTimer(id, todoData, setTodoData)}
           onPauseTimer={(id) => handlePauseTimer(id, todoData, setTodoData)}
+          onKeyDown={(evt, id) => handleKeyDown(evt, id, todoData, setTodoData)}
+          onChangeEditing={(id) => handleChangeEditing(id, todoData, setTodoData)}
         />
         <Footer
           onFilter={(filter) => handleFilter(filter, setFilter)}

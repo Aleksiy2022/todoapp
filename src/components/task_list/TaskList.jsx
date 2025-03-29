@@ -9,6 +9,8 @@ export default function TaskList({
   onDeleted = () => {},
   onStartTimer = () => {},
   onPauseTimer = () => {},
+  onKeyDown = () => {},
+  onChangeEditing = () => {},
 }) {
   return (
     <ul className="todo-list">
@@ -22,6 +24,8 @@ export default function TaskList({
             onDeleted={onDeleted}
             onStartTimer={onStartTimer}
             onPauseTimer={onPauseTimer}
+            onKeyDown={onKeyDown}
+            onChangeEditing={onChangeEditing}
           />
         )
       })}
@@ -36,4 +40,6 @@ TaskList.propTypes = {
   onDeleted: PropTypes.func,
   onStartTimer: PropTypes.func,
   onPauseTimer: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  onChangeEditing: PropTypes.func,
 }

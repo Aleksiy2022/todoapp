@@ -11,14 +11,15 @@ export default function Task({
   onDeleted = () => {},
   onStartTimer = () => {},
   onPauseTimer = () => {},
+  onKeyDown = () => {},
+  onChangeEditing = () => {},
 }) {
   const [inputValue, setInputValue] = useState({})
-  const [editing, setEditing] = useState({})
 
-  const { id, status, description, createdAt, duration } = task
+  const { id, status, editing, description, createdAt, duration } = task
 
-  function setStatesToDisplayEditForm() {
-    setEditing({ ...editing, [id]: true })
+  function onDisplayEditForm() {
+    onChangeEditing(id)
     setInputValue({ ...inputValue, [id]: description })
   }
 
@@ -29,13 +30,11 @@ export default function Task({
   function onSubmit(evt, id) {
     evt.preventDefault()
     onEditTask(id, inputValue[id])
-
-    setEditing({ ...editing, [id]: false })
     setInputValue({ ...inputValue, [id]: '' })
   }
 
   return (
-    <li className={status ? 'completed' : editing[id] ? 'editing' : ''}>
+    <li className={status ? 'completed' : editing ? 'editing' : ''}>
       <div className="view">
         <input className="toggle" type="checkbox" onChange={() => onChangeStatus(id)} checked={status} />
         <label>
@@ -49,11 +48,18 @@ export default function Task({
           </span>
           <CreatedTimer createdAt={createdAt} />
         </label>
-        <button onClick={setStatesToDisplayEditForm} className="icon icon-edit"></button>
+        <button onClick={onDisplayEditForm} className="icon icon-edit"></button>
         <button onClick={() => onDeleted(id)} className="icon icon-destroy"></button>
       </div>
       <form onSubmit={(evt) => onSubmit(evt, id)}>
-        <input type="text" className="edit hidden" onChange={(evt) => onChange(evt, id)} value={inputValue[id] || ''} />
+        <input
+          onKeyDown={(evt) => onKeyDown(evt, id)}
+          type="text"
+          className="edit hidden"
+          onChange={(evt) => onChange(evt, id)}
+          value={inputValue[id] || ''}
+          autoFocus={true}
+        />
       </form>
     </li>
   )

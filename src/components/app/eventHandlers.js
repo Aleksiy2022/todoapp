@@ -13,7 +13,7 @@ function handleChangeStatusTask(id, data, setFunc) {
 function handleEditTask(id, value, data, setFunc) {
   const updatedTodoData = data.map((elem) => {
     if (elem.id === id) {
-      return { ...elem, description: value }
+      return { ...elem, description: value, editing: false }
     }
     return elem
   })
@@ -64,6 +64,28 @@ function handleStartTimer(id, data, setFunc) {
   })
 }
 
+function handleKeyDown(evt, id, data, setFunc) {
+  if (evt.key === 'Escape') {
+    const updatedTodoData = data.map((elem) => {
+      if (elem.id === id) {
+        return { ...elem, editing: false }
+      }
+      return elem
+    })
+    setFunc(updatedTodoData)
+  }
+}
+
+function handleChangeEditing(id, data, setFunc) {
+  const updatedTodoData = data.map((elem) => {
+    if (elem.id === id) {
+      return { ...elem, editing: true }
+    }
+    return elem
+  })
+  setFunc(updatedTodoData)
+}
+
 export {
   handleChangeStatusTask,
   handleEditTask,
@@ -73,4 +95,6 @@ export {
   handleFilter,
   handlePauseTimer,
   handleStartTimer,
+  handleKeyDown,
+  handleChangeEditing,
 }
