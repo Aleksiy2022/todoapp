@@ -55,11 +55,9 @@ export default function App() {
       }
     }
 
-    // Подписка на события
     window.addEventListener('keydown', handleGlobalEvents)
     window.addEventListener('click', handleGlobalEvents)
 
-    // Удаление событий при размонтировании компонента
     return () => {
       window.removeEventListener('keydown', handleGlobalEvents)
       window.removeEventListener('click', handleGlobalEvents)

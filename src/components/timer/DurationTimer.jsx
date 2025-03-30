@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 
 import { getTimeLeft } from './utils.js'
 
-export default function DurationTimer({ duration, onStartTimer, onPauseTimer }) {
+export default function DurationTimer({ duration = 0, onStartTimer = () => {}, onPauseTimer = () => {} }) {
   const [timeLeft, setTimeLeft] = useState(getTimeLeft(duration))
 
   useEffect(() => {
@@ -16,4 +17,10 @@ export default function DurationTimer({ duration, onStartTimer, onPauseTimer }) 
       {timeLeft}
     </>
   )
+}
+
+DurationTimer.propTypes = {
+  duration: PropTypes.number,
+  onStartTimer: PropTypes.func,
+  onPauseTimer: PropTypes.func,
 }

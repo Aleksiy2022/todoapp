@@ -1,7 +1,8 @@
 import { formatDistanceToNow } from 'date-fns'
 import { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
 
-export default function CreatedTimer({ createdAt }) {
+export default function CreatedTimer({ createdAt = new Date().toISOString() }) {
   const updateInterval = 10000
   const [createdAgo, setCreatedAgo] = useState(calculateCreateAgo)
 
@@ -19,4 +20,8 @@ export default function CreatedTimer({ createdAt }) {
   }, [])
 
   return <span className="description">{createdAgo}</span>
+}
+
+CreatedTimer.propTypes = {
+  createdAt: PropTypes.instanceOf(Date),
 }

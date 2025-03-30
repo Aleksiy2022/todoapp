@@ -70,4 +70,8 @@ Task.propTypes = {
   onChangeStatus: PropTypes.func,
   onEditTask: PropTypes.func,
   onDeleted: PropTypes.func,
+  onStartTimer: PropTypes.func,
+  onPauseTimer: PropTypes.func,
+  onKeyDown: PropTypes.func,
+  onChangeEditing: PropTypes.func,
 }
