@@ -61,8 +61,20 @@ export default function NewTaskForm({ onAddNewTask = () => {} }) {
           placeholder="Min"
           value={minutes}
           required
+          type="number"
+          min="0"
+          max="59"
         />
-        <input name="sec" onChange={handleInput} className="new-todo-form__timer" placeholder="Sec" value={seconds} />
+        <input
+          name="sec"
+          onChange={handleInput}
+          className="new-todo-form__timer"
+          placeholder="Sec"
+          value={seconds}
+          type="number"
+          min="0"
+          max="59"
+        />
         <button type="submit" style={{ display: 'none' }}></button>
       </form>
     </header>
