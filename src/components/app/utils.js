@@ -2,7 +2,6 @@ function createTask(id, task) {
   const currentDate = new Date()
   const currentTime = Date.now()
   return {
-    statusClass: '',
     description: task.description,
     createdAt: currentDate.toISOString(),
     id: id,
