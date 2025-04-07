@@ -9,11 +9,10 @@ export default function Task({
   onChangeStatus = () => {},
   onEditTask = () => {},
   onDeleted = () => {},
-  onStartTimer = () => {},
-  onPauseTimer = () => {},
   onKeyDown = () => {},
   onChangeEditing = () => {},
 }) {
+  console.log('ререндер таски')
   const [inputValue, setInputValue] = useState({})
 
   const { id, status, editing, description, createdAt, duration } = task
@@ -40,11 +39,7 @@ export default function Task({
         <label>
           <span className="title">{description}</span>
           <span className="description">
-            <DurationTimer
-              duration={duration}
-              onStartTimer={() => onStartTimer(id)}
-              onPauseTimer={() => onPauseTimer(id)}
-            />
+            <DurationTimer duration={duration} status={status} />
           </span>
           <CreatedTimer createdAt={createdAt} />
         </label>
@@ -70,8 +65,6 @@ Task.propTypes = {
   onChangeStatus: PropTypes.func,
   onEditTask: PropTypes.func,
   onDeleted: PropTypes.func,
-  onStartTimer: PropTypes.func,
-  onPauseTimer: PropTypes.func,
   onKeyDown: PropTypes.func,
   onChangeEditing: PropTypes.func,
 }

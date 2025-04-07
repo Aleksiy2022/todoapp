@@ -1,16 +1,12 @@
 function createTask(id, task) {
   const currentDate = new Date()
-  const currentTime = Date.now()
   return {
+    id: id,
     description: task.description,
     createdAt: currentDate.toISOString(),
-    id: id,
     status: false,
     editing: false,
     duration: task.duration,
-    timerStatus: true,
-    startTimer: currentTime,
-    endTimer: currentTime + task.duration,
   }
 }
 
@@ -29,4 +25,12 @@ function getUndoneTasksCount(data) {
   return data.filter((task) => !task.status).length
 }
 
-export { createTask, getFilteredTasks, getUndoneTasksCount }
+function resetEditing(currentTodoData) {
+  const newTodoData = currentTodoData.map((task) => ({ ...task, editing: false }))
+  if (currentTodoData.some((task, index) => task.editing !== newTodoData[index].editing)) {
+    return newTodoData
+  }
+  return currentTodoData
+}
+
+export { createTask, getFilteredTasks, getUndoneTasksCount, resetEditing }

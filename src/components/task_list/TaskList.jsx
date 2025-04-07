@@ -7,11 +7,10 @@ export default function TaskList({
   onChangeStatus = () => {},
   onEditTask = () => {},
   onDeleted = () => {},
-  onStartTimer = () => {},
-  onPauseTimer = () => {},
   onKeyDown = () => {},
   onChangeEditing = () => {},
 }) {
+  console.log('ререндер списка задач')
   return (
     <ul className="todo-list">
       {tasks.map((task) => {
@@ -22,8 +21,6 @@ export default function TaskList({
             onChangeStatus={onChangeStatus}
             onEditTask={onEditTask}
             onDeleted={onDeleted}
-            onStartTimer={onStartTimer}
-            onPauseTimer={onPauseTimer}
             onKeyDown={onKeyDown}
             onChangeEditing={onChangeEditing}
           />
@@ -38,8 +35,6 @@ TaskList.propTypes = {
   onChangeStatus: PropTypes.func,
   onEditTask: PropTypes.func,
   onDeleted: PropTypes.func,
-  onStartTimer: PropTypes.func,
-  onPauseTimer: PropTypes.func,
   onKeyDown: PropTypes.func,
   onChangeEditing: PropTypes.func,
 }

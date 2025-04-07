@@ -8,6 +8,7 @@ export default function Footer({
   undoneTasksCount = 0,
   onDeleteCompletedTasks = () => {},
 }) {
+  console.log('ререндер футера')
   return (
     <footer className="footer">
       <span className="todo-count">{undoneTasksCount} items left</span>

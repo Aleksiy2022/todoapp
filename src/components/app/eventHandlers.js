@@ -40,30 +40,6 @@ function handleFilter(filter, setFunc) {
   setFunc(filter)
 }
 
-function handlePauseTimer(id, data, setFunc) {
-  const updatedTodoData = data.map((elem) => {
-    if (elem.id === id) {
-      return { ...elem, timerStatus: false }
-    }
-    return elem
-  })
-  setFunc(updatedTodoData)
-}
-
-function handleStartTimer(id, data, setFunc) {
-  data.forEach((elem) => {
-    if (elem.id === id && !elem.timerStatus) {
-      const updatedTodoData = data.map((elem) => {
-        if (elem.id === id && !elem.timerStatus) {
-          return { ...elem, timerStatus: true, endTimer: elem.duration + Date.now() }
-        }
-        return elem
-      })
-      setFunc(updatedTodoData)
-    }
-  })
-}
-
 function handleKeyDown(evt, id, data, setFunc) {
   if (evt.key === 'Escape') {
     const updatedTodoData = data.map((elem) => {
@@ -93,8 +69,6 @@ export {
   handleDeletedTask,
   handleDeleteCompletedTasks,
   handleFilter,
-  handlePauseTimer,
-  handleStartTimer,
   handleKeyDown,
   handleChangeEditing,
 }
