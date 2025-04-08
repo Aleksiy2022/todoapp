@@ -9,10 +9,10 @@ export default function Task({
   onChangeStatus = () => {},
   onEditTask = () => {},
   onDeleted = () => {},
-  onKeyDown = () => {},
   onChangeEditing = () => {},
 }) {
-  console.log('ререндер таски')
+  console.log('Рендер таски')
+  console.log('----------------------------------------------')
   const [inputValue, setInputValue] = useState({})
 
   const { id, status, editing, description, createdAt, duration } = task
@@ -48,7 +48,6 @@ export default function Task({
       </div>
       <form onSubmit={(evt) => onSubmit(evt, id)}>
         <input
-          onKeyDown={(evt) => onKeyDown(evt, id)}
           type="text"
           className="edit hidden"
           onChange={(evt) => onChange(evt, id)}

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import PropTypes from 'prop-types'
 
 export default function NewTaskForm({ onAddNewTask = () => {} }) {
+  console.log('Рендер формы')
+  console.log('----------------------------------------------')
   const [newTask, setNewTask] = useState('')
   const [minutes, setMinutes] = useState('')
   const [seconds, setSeconds] = useState('')

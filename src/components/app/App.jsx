@@ -13,11 +13,12 @@ import {
   handleDeletedTask,
   handleEditTask,
   handleFilter,
-  handleKeyDown,
 } from './eventHandlers.js'
 import { getFilteredTasks, getUndoneTasksCount, resetEditing } from './utils.js'
 
 export default function App() {
+  console.log('Рендер приложения')
+  console.log('----------------------------------------------')
   const [todoData, setTodoData] = useState([])
   const [taskFilter, setFilter] = useState('all')
 
@@ -44,21 +45,20 @@ export default function App() {
 
   return (
     <section className="todoapp">
-      <NewTaskForm onAddNewTask={(task) => handleAddNewTask(uuidv4(), task, todoData, setTodoData)} />
+      <NewTaskForm onAddNewTask={(task) => handleAddNewTask(uuidv4(), task, setTodoData)} />
       <section className="main">
         <TaskList
           tasks={getFilteredTasks(taskFilter, todoData)}
-          onChangeStatus={(id) => handleChangeStatusTask(id, todoData, setTodoData)}
-          onEditTask={(id, value) => handleEditTask(id, value, todoData, setTodoData)}
-          onDeleted={(id) => handleDeletedTask(id, todoData, setTodoData)}
-          onKeyDown={(evt, id) => handleKeyDown(evt, id, todoData, setTodoData)}
-          onChangeEditing={(id) => handleChangeEditing(id, todoData, setTodoData)}
+          onChangeStatus={(id) => handleChangeStatusTask(id, setTodoData)}
+          onEditTask={(id, value) => handleEditTask(id, value, setTodoData)}
+          onDeleted={(id) => handleDeletedTask(id, setTodoData)}
+          onChangeEditing={(id) => handleChangeEditing(id, setTodoData)}
         />
         <Footer
           onFilter={(filter) => handleFilter(filter, setFilter)}
           filter={taskFilter}
           undoneTasksCount={getUndoneTasksCount(todoData)}
-          onDeleteCompletedTasks={() => handleDeleteCompletedTasks(todoData, setTodoData)}
+          onDeleteCompletedTasks={() => handleDeleteCompletedTasks(setTodoData)}
         />
       </section>
     </section>

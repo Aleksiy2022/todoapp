@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 import { getTimeLeft } from './utils.js'
 
 export default function DurationTimer({ duration = 0, status }) {
-  console.log('Ререндер таймера')
+  console.log('Рендер таймера')
+  console.log('----------------------------------------------')
   const [isActive, setIsActive] = useState(true)
   const [taskDuration, setTaskDuration] = useState(duration)
   const [endTime, setEndTime] = useState(Date.now() + taskDuration)

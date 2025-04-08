@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 
 export default function TaskFilter({ onFilter = () => {}, filter = 'all' }) {
-  console.log('ререндер фильтра')
+  console.log('Рендер фильтра')
+  console.log('----------------------------------------------')
   const buttonsData = [
     { name: 'all', label: 'All' },
     { name: 'active', label: 'Active' },

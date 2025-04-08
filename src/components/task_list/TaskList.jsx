@@ -7,10 +7,10 @@ export default function TaskList({
   onChangeStatus = () => {},
   onEditTask = () => {},
   onDeleted = () => {},
-  onKeyDown = () => {},
   onChangeEditing = () => {},
 }) {
-  console.log('ререндер списка задач')
+  console.log('Рендер списка задач')
+  console.log('----------------------------------------------')
   return (
     <ul className="todo-list">
       {tasks.map((task) => {
@@ -21,7 +21,6 @@ export default function TaskList({
             onChangeStatus={onChangeStatus}
             onEditTask={onEditTask}
             onDeleted={onDeleted}
-            onKeyDown={onKeyDown}
             onChangeEditing={onChangeEditing}
           />
         )
