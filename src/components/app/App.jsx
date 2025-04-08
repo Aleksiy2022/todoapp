@@ -13,8 +13,9 @@ import {
   handleDeletedTask,
   handleEditTask,
   handleFilter,
+  handleResetEditing,
 } from './eventHandlers.js'
-import { getUndoneTasksCount, resetEditing } from './utils.js'
+import { getUndoneTasksCount } from './utils.js'
 
 export default function App() {
   // console.log('Рендер приложения')
@@ -22,15 +23,15 @@ export default function App() {
   const [todoData, setTodoData] = useState([])
   const [taskFilter, setTaskFilter] = useState('all')
 
-  const memoizedResetEditing = useCallback(resetEditing, [])
+  const memoizedHandleResetEditing = useCallback(handleResetEditing, [])
 
   useEffect(() => {
     function handleGlobalEvents(event) {
       if (event.type === 'keydown' && event.key === 'Escape') {
-        setTodoData(memoizedResetEditing)
+        setTodoData(memoizedHandleResetEditing)
       }
       if (event.type === 'click' && !event.target.classList.value.includes('edit')) {
-        setTodoData(memoizedResetEditing)
+        setTodoData(memoizedHandleResetEditing)
       }
     }
 

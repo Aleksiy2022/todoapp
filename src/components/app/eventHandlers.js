@@ -52,6 +52,14 @@ function handleChangeEditing(id, setFunc) {
   )
 }
 
+function handleResetEditing(currentTodoData) {
+  const newTodoData = currentTodoData.map((task) => ({ ...task, editing: false }))
+  if (currentTodoData.some((task, index) => task.editing !== newTodoData[index].editing)) {
+    return newTodoData
+  }
+  return currentTodoData
+}
+
 export {
   handleChangeStatusTask,
   handleEditTask,
@@ -60,4 +68,5 @@ export {
   handleDeleteCompletedTasks,
   handleFilter,
   handleChangeEditing,
+  handleResetEditing,
 }
