@@ -14,13 +14,13 @@ import {
   handleEditTask,
   handleFilter,
 } from './eventHandlers.js'
-import { getFilteredTasks, getUndoneTasksCount, resetEditing } from './utils.js'
+import { getUndoneTasksCount, resetEditing } from './utils.js'
 
 export default function App() {
-  console.log('Рендер приложения')
-  console.log('----------------------------------------------')
+  // console.log('Рендер приложения')
+  // console.log('----------------------------------------------')
   const [todoData, setTodoData] = useState([])
-  const [taskFilter, setFilter] = useState('all')
+  const [taskFilter, setTaskFilter] = useState('all')
 
   const memoizedResetEditing = useCallback(resetEditing, [])
 
@@ -48,14 +48,14 @@ export default function App() {
       <NewTaskForm onAddNewTask={(task) => handleAddNewTask(uuidv4(), task, setTodoData)} />
       <section className="main">
         <TaskList
-          tasks={getFilteredTasks(taskFilter, todoData)}
+          tasks={{ todoData: todoData, taskFilter: taskFilter }}
           onChangeStatus={(id) => handleChangeStatusTask(id, setTodoData)}
           onEditTask={(id, value) => handleEditTask(id, value, setTodoData)}
           onDeleted={(id) => handleDeletedTask(id, setTodoData)}
           onChangeEditing={(id) => handleChangeEditing(id, setTodoData)}
         />
         <Footer
-          onFilter={(filter) => handleFilter(filter, setFilter)}
+          onFilter={(filter) => handleFilter(filter, setTaskFilter)}
           filter={taskFilter}
           undoneTasksCount={getUndoneTasksCount(todoData)}
           onDeleteCompletedTasks={() => handleDeleteCompletedTasks(setTodoData)}

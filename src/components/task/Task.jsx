@@ -6,13 +6,14 @@ import CreatedTimer from '../timer/CreatedTimer.jsx'
 
 export default function Task({
   task = {},
+  filter,
   onChangeStatus = () => {},
   onEditTask = () => {},
   onDeleted = () => {},
   onChangeEditing = () => {},
 }) {
-  console.log('Рендер таски')
-  console.log('----------------------------------------------')
+  // console.log('Рендер таски')
+  // console.log('----------------------------------------------')
   const [inputValue, setInputValue] = useState({})
 
   const { id, status, editing, description, createdAt, duration } = task
@@ -32,8 +33,15 @@ export default function Task({
     setInputValue({ ...inputValue, [id]: '' })
   }
 
+  const hiddenUncompleted = !status && filter === 'completed' ? 'hidden' : ''
+  const hiddenUnactive = status && filter === 'active' ? 'hidden' : ''
+
   return (
-    <li className={status ? 'completed' : editing ? 'editing' : ''}>
+    <li
+      className={`${status ? 'completed' : editing ? 'editing' : ''} ${
+        hiddenUncompleted ? hiddenUncompleted : hiddenUnactive ? hiddenUnactive : ''
+      }`}
+    >
       <div className="view">
         <input className="toggle" type="checkbox" onChange={() => onChangeStatus(id)} checked={status} />
         <label>

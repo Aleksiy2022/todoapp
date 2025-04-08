@@ -10,17 +10,6 @@ function createTask(id, task) {
   }
 }
 
-function getFilteredTasks(filter, data) {
-  switch (filter) {
-    case 'all':
-      return data
-    case 'active':
-      return data.filter((task) => task.status === false)
-    case 'completed':
-      return data.filter((task) => task.status)
-  }
-}
-
 function getUndoneTasksCount(data) {
   return data.filter((task) => !task.status).length
 }
@@ -33,4 +22,4 @@ function resetEditing(currentTodoData) {
   return currentTodoData
 }
 
-export { createTask, getFilteredTasks, getUndoneTasksCount, resetEditing }
+export { createTask, getUndoneTasksCount, resetEditing }
