@@ -1,21 +1,26 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { v4 as uuidv4 } from 'uuid'
+import { useState, useContext } from 'react'
 
-export default function NewTaskForm({ onAddNewTask = () => {} }) {
+import { TasksContext } from '../tasks_context/TasksContext.jsx'
+
+export default function NewTaskForm() {
   console.log('Рендер формы')
   console.log('----------------------------------------------')
   const [newTask, setNewTask] = useState('')
   const [minutes, setMinutes] = useState('')
   const [seconds, setSeconds] = useState('')
 
+  const { handlers, setStates } = useContext(TasksContext)
+
   function handleSubmit(evt) {
     evt.preventDefault()
 
     const duration = calculateDuration(minutes, seconds)
-    onAddNewTask({
+    const newTaskData = {
       description: newTask,
       duration: duration,
-    })
+    }
+    handlers.addNewTask(uuidv4(), newTaskData, setStates.setTasks)
     setNewTask('')
     setMinutes('')
     setSeconds('')
@@ -81,8 +86,4 @@ export default function NewTaskForm({ onAddNewTask = () => {} }) {
       </form>
     </header>
   )
-}
-
-NewTaskForm.propTypes = {
-  onAddNewTask: PropTypes.func,
 }

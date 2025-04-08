@@ -37,10 +37,6 @@ function deleteCompletedTasks(setFunc) {
   setFunc((curTasks) => curTasks.filter((task) => !task.status))
 }
 
-function filter(filter, setFunc) {
-  setFunc(filter)
-}
-
 function changeEditing(id, setFunc) {
   setFunc((curTasks) =>
     curTasks.map((task) => {
@@ -60,13 +56,4 @@ function resetEditing(currentTodoData) {
   return currentTodoData
 }
 
-export {
-  changeStatusTask,
-  editTask,
-  addNewTask,
-  deletedTask,
-  deleteCompletedTasks,
-  filter,
-  changeEditing,
-  resetEditing,
-}
+export { changeStatusTask, editTask, addNewTask, deletedTask, deleteCompletedTasks, changeEditing, resetEditing }
