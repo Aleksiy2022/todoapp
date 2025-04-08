@@ -1,13 +1,10 @@
-import PropTypes from 'prop-types'
-import { useContext } from 'react'
+import { useContext, memo } from 'react'
 
-import { TasksContext } from '../tasks_context/TasksContext.jsx'
+import { TasksHandlerContext, TasksFilterContext } from '../tasks_context/TasksContext.jsx'
 
-export default function TaskFilter() {
-  console.log('Рендер фильтра')
-  console.log('----------------------------------------------')
-
-  const { tasksFilter, setStates } = useContext(TasksContext)
+const TaskFilter = memo(function TaskFilter() {
+  const { changeFilter } = useContext(TasksHandlerContext)
+  const { tasksFilter } = useContext(TasksFilterContext)
 
   const buttonsData = [
     { name: 'all', label: 'All' },
@@ -19,7 +16,7 @@ export default function TaskFilter() {
     const isActive = tasksFilter === btn.name
     return (
       <li key={btn.name}>
-        <button className={isActive ? 'selected' : ''} onClick={() => setStates.setFilter(btn.name)}>
+        <button className={isActive ? 'selected' : ''} onClick={() => changeFilter(btn.name)}>
           {btn.label}
         </button>
       </li>
@@ -27,9 +24,6 @@ export default function TaskFilter() {
   })
 
   return <ul className="filters">{buttons}</ul>
-}
+})
 
-TaskFilter.propTypes = {
-  onFilter: PropTypes.func,
-  filter: PropTypes.string,
-}
+export { TaskFilter }

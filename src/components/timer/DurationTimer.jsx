@@ -1,15 +1,15 @@
-import { useContext, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 
-import { TasksContext } from '../tasks_context/TasksContext.jsx'
+import { getTimeLeft } from './utils.js'
 
 export default function DurationTimer({ duration = 0, status }) {
   const [isActive, setIsActive] = useState(true)
   const [taskDuration, setTaskDuration] = useState(duration)
   const [endTime, setEndTime] = useState(Date.now() + taskDuration)
-  const { utils } = useContext(TasksContext)
 
-  const timeLeft = utils.getTimeLeft(taskDuration)
+  const timeLeft = getTimeLeft(taskDuration)
+
   useEffect(() => {
     let timer = null
     if (isActive) {

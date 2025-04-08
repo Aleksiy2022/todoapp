@@ -1,23 +1,41 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect, memo } from 'react'
 import PropTypes from 'prop-types'
 
 import DurationTimer from '../timer/DurationTimer.jsx'
 import CreatedTimer from '../timer/CreatedTimer.jsx'
-import { TasksContext } from '../tasks_context/TasksContext.jsx'
+import { TasksHandlerContext, TasksFilterContext } from '../tasks_context/TasksContext.jsx'
 
-export default function Task({ task = {} }) {
-  console.log('Рендер таски')
-  console.log('----------------------------------------------')
+const Task = memo(function Task({ task = {} }) {
   const [inputValue, setInputValue] = useState({})
-  const { tasksFilter, handlers, setStates } = useContext(TasksContext)
+  const [editing, setEditing] = useState(false)
 
-  const { id, status, editing, description, createdAt, duration } = task
+  const { editTask, changeStatusTask, deletedTask } = useContext(TasksHandlerContext)
+  const { tasksFilter } = useContext(TasksFilterContext)
+
+  const { id, status, description, createdAt, duration } = task
 
   const hiddenUncompleted = !status && tasksFilter === 'completed' ? 'hidden' : ''
   const hiddenInactive = status && tasksFilter === 'active' ? 'hidden' : ''
 
+  useEffect(() => {
+    function handleGlobalEvents(event) {
+      if (event.type === 'keydown' && event.key === 'Escape') {
+        setEditing(false)
+      }
+      if (event.type === 'click' && !event.target.classList.value.includes('edit')) {
+        setEditing(false)
+      }
+    }
+    window.addEventListener('keydown', handleGlobalEvents)
+    window.addEventListener('click', handleGlobalEvents)
+    return () => {
+      window.removeEventListener('keydown', handleGlobalEvents)
+      window.removeEventListener('click', handleGlobalEvents)
+    }
+  }, [])
+
   function onDisplayEditForm() {
-    handlers.changeEditing(id, setStates.setTasks)
+    setEditing(true)
     setInputValue({ ...inputValue, [id]: description })
   }
 
@@ -27,8 +45,9 @@ export default function Task({ task = {} }) {
 
   function onSubmit(evt, id) {
     evt.preventDefault()
-    handlers.editTask(id, inputValue[id], setStates.setTasks)
+    editTask(id, inputValue[id])
     setInputValue({ ...inputValue, [id]: '' })
+    setEditing(false)
   }
 
   return (
@@ -38,12 +57,7 @@ export default function Task({ task = {} }) {
       }`}
     >
       <div className="view">
-        <input
-          className="toggle"
-          type="checkbox"
-          onChange={() => handlers.changeStatusTask(id, setStates.setTasks)}
-          checked={status}
-        />
+        <input className="toggle" type="checkbox" onChange={() => changeStatusTask(id)} checked={status} />
         <label>
           <span className="title">{description}</span>
           <span className="description">
@@ -52,7 +66,7 @@ export default function Task({ task = {} }) {
           <CreatedTimer createdAt={createdAt} />
         </label>
         <button onClick={onDisplayEditForm} className="icon icon-edit"></button>
-        <button onClick={() => handlers.deletedTask(id, setStates.setTasks)} className="icon icon-destroy"></button>
+        <button onClick={() => deletedTask(id)} className="icon icon-destroy"></button>
       </div>
       <form onSubmit={(evt) => onSubmit(evt, id)}>
         <input
@@ -65,15 +79,16 @@ export default function Task({ task = {} }) {
       </form>
     </li>
   )
-}
+})
 
 Task.propTypes = {
   task: PropTypes.shape({
     id: PropTypes.string.isRequired,
     status: PropTypes.bool.isRequired,
-    editing: PropTypes.bool,
     description: PropTypes.string.isRequired,
     createdAt: PropTypes.string.isRequired,
     duration: PropTypes.number.isRequired,
   }).isRequired,
 }
+
+export { Task }

@@ -1,16 +1,14 @@
 import { v4 as uuidv4 } from 'uuid'
 import { useState, useContext } from 'react'
 
-import { TasksContext } from '../tasks_context/TasksContext.jsx'
+import { TasksHandlerContext } from '../tasks_context/TasksContext.jsx'
 
 export default function NewTaskForm() {
-  console.log('Рендер формы')
-  console.log('----------------------------------------------')
   const [newTask, setNewTask] = useState('')
   const [minutes, setMinutes] = useState('')
   const [seconds, setSeconds] = useState('')
 
-  const { handlers, setStates } = useContext(TasksContext)
+  const { addNewTask } = useContext(TasksHandlerContext)
 
   function handleSubmit(evt) {
     evt.preventDefault()
@@ -20,7 +18,7 @@ export default function NewTaskForm() {
       description: newTask,
       duration: duration,
     }
-    handlers.addNewTask(uuidv4(), newTaskData, setStates.setTasks)
+    addNewTask(uuidv4(), newTaskData)
     setNewTask('')
     setMinutes('')
     setSeconds('')
