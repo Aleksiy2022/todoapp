@@ -1,43 +1,19 @@
-import PropTypes from 'prop-types'
+import { useContext } from 'react'
 
 import Task from '../task/Task.jsx'
+import { TasksContext } from '../tasks_context/TasksContext.jsx'
 
-export default function TaskList({
-  tasks = {},
-  onChangeStatus = () => {},
-  onEditTask = () => {},
-  onDeleted = () => {},
-  onChangeEditing = () => {},
-}) {
-  // console.log('Рендер списка задач')
-  // console.log('----------------------------------------------')
+export default function TaskList() {
+  console.log('Рендер списка задач')
+  console.log('----------------------------------------------')
+
+  const { tasks } = useContext(TasksContext)
+
   return (
     <ul className="todo-list">
-      {tasks.todoData.map((task) => {
-        return (
-          <Task
-            key={task.id}
-            task={task}
-            filter={tasks.taskFilter}
-            onChangeStatus={onChangeStatus}
-            onEditTask={onEditTask}
-            onDeleted={onDeleted}
-            onChangeEditing={onChangeEditing}
-          />
-        )
+      {tasks.map((task) => {
+        return <Task key={task.id} task={task} />
       })}
     </ul>
   )
-}
-
-TaskList.propTypes = {
-  tasks: PropTypes.shape({
-    todoData: PropTypes.arrayOf(PropTypes.object).isRequired,
-    taskFilter: PropTypes.string.isRequired,
-  }).isRequired,
-  onChangeStatus: PropTypes.func,
-  onEditTask: PropTypes.func,
-  onDeleted: PropTypes.func,
-  onKeyDown: PropTypes.func,
-  onChangeEditing: PropTypes.func,
 }

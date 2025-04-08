@@ -7,7 +7,6 @@ import {
   deleteCompletedTasks,
   deletedTask,
   editTask,
-  filter,
   resetEditing,
 } from './eventHandlers.js'
 import { getUndoneTasksCount, getTimeLeft } from './utils.js'
@@ -29,7 +28,6 @@ function TasksProvider({ children }) {
     deleteCompletedTasks,
     deletedTask,
     editTask,
-    filter,
     resetEditing,
   }
 

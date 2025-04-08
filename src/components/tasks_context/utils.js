@@ -10,8 +10,8 @@ function createTask(id, task) {
   }
 }
 
-function getUndoneTasksCount(data) {
-  return data.filter((task) => !task.status).length
+function getUndoneTasksCount(tasks) {
+  return tasks.filter((task) => !task.status).length
 }
 
 function getTimeLeft(duration) {

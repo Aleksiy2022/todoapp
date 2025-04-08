@@ -1,25 +1,23 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import PropTypes from 'prop-types'
 
 import DurationTimer from '../timer/DurationTimer.jsx'
 import CreatedTimer from '../timer/CreatedTimer.jsx'
+import { TasksContext } from '../tasks_context/TasksContext.jsx'
 
-export default function Task({
-  task = {},
-  filter,
-  onChangeStatus = () => {},
-  onEditTask = () => {},
-  onDeleted = () => {},
-  onChangeEditing = () => {},
-}) {
-  // console.log('Рендер таски')
-  // console.log('----------------------------------------------')
+export default function Task({ task = {} }) {
+  console.log('Рендер таски')
+  console.log('----------------------------------------------')
   const [inputValue, setInputValue] = useState({})
+  const { tasksFilter, handlers, setStates } = useContext(TasksContext)
 
   const { id, status, editing, description, createdAt, duration } = task
 
+  const hiddenUncompleted = !status && tasksFilter === 'completed' ? 'hidden' : ''
+  const hiddenInactive = status && tasksFilter === 'active' ? 'hidden' : ''
+
   function onDisplayEditForm() {
-    onChangeEditing(id)
+    handlers.changeEditing(id, setStates.setTasks)
     setInputValue({ ...inputValue, [id]: description })
   }
 
@@ -29,21 +27,23 @@ export default function Task({
 
   function onSubmit(evt, id) {
     evt.preventDefault()
-    onEditTask(id, inputValue[id])
+    handlers.editTask(id, inputValue[id], setStates.setTasks)
     setInputValue({ ...inputValue, [id]: '' })
   }
-
-  const hiddenUncompleted = !status && filter === 'completed' ? 'hidden' : ''
-  const hiddenUnactive = status && filter === 'active' ? 'hidden' : ''
 
   return (
     <li
       className={`${status ? 'completed' : editing ? 'editing' : ''} ${
-        hiddenUncompleted ? hiddenUncompleted : hiddenUnactive ? hiddenUnactive : ''
+        hiddenUncompleted ? hiddenUncompleted : hiddenInactive ? hiddenInactive : ''
       }`}
     >
       <div className="view">
-        <input className="toggle" type="checkbox" onChange={() => onChangeStatus(id)} checked={status} />
+        <input
+          className="toggle"
+          type="checkbox"
+          onChange={() => handlers.changeStatusTask(id, setStates.setTasks)}
+          checked={status}
+        />
         <label>
           <span className="title">{description}</span>
           <span className="description">
@@ -52,7 +52,7 @@ export default function Task({
           <CreatedTimer createdAt={createdAt} />
         </label>
         <button onClick={onDisplayEditForm} className="icon icon-edit"></button>
-        <button onClick={() => onDeleted(id)} className="icon icon-destroy"></button>
+        <button onClick={() => handlers.deletedTask(id, setStates.setTasks)} className="icon icon-destroy"></button>
       </div>
       <form onSubmit={(evt) => onSubmit(evt, id)}>
         <input
@@ -68,10 +68,12 @@ export default function Task({
 }
 
 Task.propTypes = {
-  task: PropTypes.object.isRequired,
-  onChangeStatus: PropTypes.func,
-  onEditTask: PropTypes.func,
-  onDeleted: PropTypes.func,
-  onKeyDown: PropTypes.func,
-  onChangeEditing: PropTypes.func,
+  task: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    status: PropTypes.bool.isRequired,
+    editing: PropTypes.bool,
+    description: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    duration: PropTypes.number.isRequired,
+  }).isRequired,
 }
