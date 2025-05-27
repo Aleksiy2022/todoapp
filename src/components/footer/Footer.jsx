@@ -1,28 +1,21 @@
-import './footer.css'
-import PropTypes from 'prop-types'
+import { useContext } from 'react'
 
-import TaskFilter from '../task_filter/TaskFilter.jsx'
+import { TaskFilter } from '../task_filter/TaskFilter.jsx'
+import { TasksContext, TasksHandlerContext } from '../tasks_context/TasksContext.jsx'
 
-export default function Footer({
-  onFilter = () => {},
-  filter = 'all',
-  countUndoneTasks = 0,
-  onDeleteCompletedTasks = () => {},
-}) {
+import { getUndoneTasksCount } from './utils.js'
+
+export default function Footer() {
+  const { deleteCompletedTasks } = useContext(TasksHandlerContext)
+  const { tasks } = useContext(TasksContext)
+
   return (
     <footer className="footer">
-      <span className="todo-count">{countUndoneTasks} items left</span>
-      <TaskFilter onFilter={(value) => onFilter(value)} filter={filter} />
-      <button onClick={onDeleteCompletedTasks} className="clear-completed">
+      <span className="todo-count">{getUndoneTasksCount(tasks)} items left</span>
+      <TaskFilter />
+      <button onClick={deleteCompletedTasks} className="clear-completed">
         Clear completed
       </button>
     </footer>
   )
-}
-
-Footer.propTypes = {
-  onFilter: PropTypes.func,
-  filter: PropTypes.string,
-  countUndoneTasks: PropTypes.number,
-  onDeleteCompletedTasks: PropTypes.func,
 }

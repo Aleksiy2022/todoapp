@@ -1,34 +1,16 @@
-import './task_list.css'
-import PropTypes from 'prop-types'
+import { useContext } from 'react'
 
-import Task from '../task/Task.jsx'
+import { Task } from '../task/Task.jsx'
+import { TasksContext } from '../tasks_context/TasksContext.jsx'
 
-export default function TaskList({
-  tasks = [],
-  onChangeStatus = () => {},
-  onEditTask = () => {},
-  onDeleted = () => {},
-}) {
+export default function TaskList() {
+  const { tasks } = useContext(TasksContext)
+
   return (
     <ul className="todo-list">
       {tasks.map((task) => {
-        return (
-          <Task
-            key={task.id}
-            task={task}
-            onChangeStatus={(id) => onChangeStatus(id)}
-            onEditTask={(id, value) => onEditTask(id, value)}
-            onDeleted={(id) => onDeleted(id)}
-          />
-        )
+        return <Task key={task.id} task={task} />
       })}
     </ul>
   )
-}
-
-TaskList.propTypes = {
-  tasks: PropTypes.arrayOf(PropTypes.object),
-  onChangeStatus: PropTypes.func,
-  onEditTask: PropTypes.func,
-  onDeleted: PropTypes.func,
 }

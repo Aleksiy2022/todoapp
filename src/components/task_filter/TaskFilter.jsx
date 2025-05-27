@@ -1,7 +1,11 @@
-import './task_filter.css'
-import PropTypes from 'prop-types'
+import { useContext, memo } from 'react'
 
-export default function TaskFilter({ onFilter = () => {}, filter = 'all' }) {
+import { TasksHandlerContext, TasksFilterContext } from '../tasks_context/TasksContext.jsx'
+
+const TaskFilter = memo(function TaskFilter() {
+  const { changeFilter } = useContext(TasksHandlerContext)
+  const { tasksFilter } = useContext(TasksFilterContext)
+
   const buttonsData = [
     { name: 'all', label: 'All' },
     { name: 'active', label: 'Active' },
@@ -9,15 +13,10 @@ export default function TaskFilter({ onFilter = () => {}, filter = 'all' }) {
   ]
 
   const buttons = buttonsData.map((btn) => {
-    const isActive = filter === btn.name
+    const isActive = tasksFilter === btn.name
     return (
       <li key={btn.name}>
-        <button
-          className={isActive ? 'selected' : ''}
-          onClick={() => {
-            onFilter(btn.name)
-          }}
-        >
+        <button className={isActive ? 'selected' : ''} onClick={() => changeFilter(btn.name)}>
           {btn.label}
         </button>
       </li>
@@ -25,9 +24,6 @@ export default function TaskFilter({ onFilter = () => {}, filter = 'all' }) {
   })
 
   return <ul className="filters">{buttons}</ul>
-}
+})
 
-TaskFilter.propTypes = {
-  onFilter: PropTypes.func,
-  filter: PropTypes.string,
-}
+export { TaskFilter }
