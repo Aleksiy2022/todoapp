@@ -1,3 +1,4 @@
-# React + Vite
+## Ссылка на проект
 
-https://todoapp-rust-two.vercel.app/
+[Посмотреть актуальную версию пэт-проекта](https://todoapp-rust-two.vercel.app/)
+
